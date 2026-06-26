@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Social Layer — Alshaya Group</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#FEFFFF;
+      --paper:#FFFDF8;
+      --ink:#151515;
+      --navy:#14213D;
+      --muted:#6B6F75;
+      --line:#D7E1EA;
+      --soft:#EAF2FA;
+      --blue:#2E6FB7;
+      --red:#E72D35;
+      --sage:#C9D8C5;
+      --olive:#69764F;
+      --lemon:#F2F2A6;
+      --black:#050505;
+      --radius:34px;
+      --shadow:0 24px 70px rgba(20,33,61,.065);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+
+    body{
+      font-family:Inter,system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 10% 8%,rgba(46,111,183,.018),transparent 36%),
+        radial-gradient(circle at 90% 16%,rgba(231,45,53,.008),transparent 30%),
+        var(--bg);
+      color:var(--ink);
+      min-width:320px;
+      overflow-x:hidden;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    .progress{
+      position:fixed;
+      top:0;
+      left:0;
+      height:3px;
+      width:0;
+      background:var(--navy);
+      z-index:100;
+    }
+
+    .nav{
+  position:fixed;
+  top:26px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:80;
+  display:flex;
+  gap:4px;
+  padding:7px;
+  Border:none;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.18));
+  backdrop-filter:blur(24px) saturate(150%);
+  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  border-radius:999px;
+  box-shadow:
+    0 18px 50px rgba(20,33,61,.12),
+    inset 0 1px 0 rgba(255,255,255,.62),
+    inset 0 -1px 0 rgba(20,33,61,.06);
+}
+
+    .nav a{
+  padding:9px 13px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  color:rgba(20,33,61,.68);
+  transition:background .25s ease, color .25s ease, box-shadow .25s ease;
+}
+
+    .nav a:hover,
+.nav a.active{
+  background:rgba(20,33,61,.86);
+  color:#fff;
+  box-shadow:
+    0 8px 22px rgba(20,33,61,.18),
+    inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+    section{
+      position:relative;
+      padding:112px 7vw;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1220px;
+      margin:0 auto;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      font-weight:800;
+      color:var(--muted);
+      margin-bottom:20px;
+    }
+
+    .kicker:after{
+      content:"↘";
+      font-size:14px;
+      color:var(--ink);
+    }
+
+    .section-head{
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:72px;
+      align-items:end;
+      margin-bottom:72px;
+    }
+
+    .title-side{grid-column:1}
+    .text-side{grid-column:2}
+
+    .page-title{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(42px,5.4vw,82px);
+      line-height:1;
+      letter-spacing:-.06em;
+      font-weight:700;
+      color:var(--navy);
+    }
+
+    .hero-title h1,
+    .closing-title{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(66px,9vw,126px);
+      line-height:1.02;
+      letter-spacing:-.06em;
+      font-weight:700;
+    }
+.hero-title h1 span{
+  color:#F2F2A6;
+}
+
+    .closing-title{
+      color:var(--navy);
+    }
+
+    .hero-title h1 em,
+    .closing-title em{
+      font-style:italic;
+      color:var(--blue);
+    }
+
+    h2,h3,h4{
+      font-family:Inter,system-ui,sans-serif;
+      color:var(--ink);
+    }
+
+    h3{
+      font-size:24px;
+      line-height:1.15;
+      letter-spacing:-.04em;
+      font-weight:800;
+    }
+
+    p{
+      font-size:18px;
+      line-height:1.62;
+      color:var(--muted);
+    }
+
+    .lead{
+      font-size:19px;
+  line-height:1.62;
+      max-width:760px;
+      color:var(--muted);
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(44px) scale(.985);
+      transition:opacity .95s ease, transform .95s cubic-bezier(.16,1,.3,1);
+    }
+
+    .reveal.show{
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .delay1{transition-delay:.1s}
+    .delay2{transition-delay:.2s}
+    .delay3{transition-delay:.3s}
+
+    /* HERO */
+
+    .hero{
+      min-height:100vh;
+      padding:0;
+      display:flex;
+      align-items:center;
+    }
+
+    .hero .wrap{
+      max-width:none;
+      height:100%;
+    }
+
+    .hero-card{
+      position:relative;
+      width:100vw;
+      min-height:100vh;
+      border-radius:0;
+      overflow:hidden;
+      background:var(--black);
+      box-shadow:none;
+    }
+
+    .hero-card:before{
+      content:"";
+      position:absolute;
+      inset:-16px;
+      background:
+        url("hero-alshaya-mall.jpg"),
+        radial-gradient(circle at 18% 16%,rgba(46,111,183,.50),transparent 30%),
+        radial-gradient(circle at 78% 24%,rgba(231,45,53,.22),transparent 24%),
+        radial-gradient(circle at 50% 88%,rgba(201,216,197,.44),transparent 32%),
+        linear-gradient(135deg,#D9EAF7,#FFF7ED 48%,#EAF4F1);
+      background-size:cover;
+      background-position:center;
+      filter:blur(1px);
+      transform:scale(1.04);
+      opacity:.92;
+    }
+
+    .hero-card img{
+      width:100%;
+      height:100%;
+      min-height:100vh;
+      object-fit:cover;
+      opacity:.84;
+    }
+
+    .hero-placeholder{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:transparent;
+      color:rgba(255,252,245,.72);
+      text-align:center;
+    }
+
+    .hero-placeholder b{
+      display:block;
+      font-size:13px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .hero-placeholder small{
+      font-size:14px;
+      color:rgba(255,252,245,.68);
+    }
+
+    .hero-placeholder > div{
+      Display:none;
+      position:absolute;
+      right:clamp(24px,5vw,72px);
+      bottom:clamp(24px,5vw,72px);
+      padding:16px 18px;
+      border:1px dashed rgba(255,252,245,.34);
+      border-radius:18px;
+      background:rgba(5,5,5,.18);
+      backdrop-filter:blur(8px);
+      text-align:left;
+    }
+
+    .hero-overlay{
+      position:absolute;
+      inset:0;
+      padding:clamp(34px,6vw,92px);
+padding-top:24vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+align-items:flex-start;
+
+      background:
+        linear-gradient(to top,rgba(5,5,5,.78),rgba(5,5,5,.20) 56%,rgba(5,5,5,.12)),
+        linear-gradient(to right,rgba(5,5,5,.34),transparent 48%);
+      color:var(--paper);
+    }
+
+    .case-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:max-content;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-weight:800;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,252,245,.14);
+      border:1px solid rgba(255,252,245,.24);
+      backdrop-filter:blur(10px);
+    }
+
+    .case-tag:before{
+      content:"";
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:var(--red);
+    }
+
+    .hero-title{max-width:980px}
+
+    .hero-title p{
+      max-width:780px;
+      color:rgba(255,252,245,.92);
+      font-size:clamp(20px,2.4vw,32px);
+      line-height:1.3;
+      margin-top:26px;
+      letter-spacing:-.03em;
+    }
+
+    .meta{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:34px;
+    }
+
+    .pill{
+      border:1px solid rgba(255,252,245,.45);
+      border-radius:999px;
+      padding:10px 15px;
+      font-size:13px;
+      font-weight:700;
+      color:var(--paper);
+      background:rgba(255,255,255,.1);
+    }
+
+    /* PROJECT APPROACH */
+
+    .process-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+      align-items:stretch;
+      margin-top:64px;
+      padding-top:24px;
+    }
+
+    .process-card{
+      background:transparent;
+      border:0;
+      border-radius:0;
+      padding:18px 16px;
+      min-height:250px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      box-shadow:none;
+    }
+
+    .process-card .icon{
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      margin-bottom:28px;
+      font-size:24px;
+      font-weight:800;
+    }
+
+    .process-card:nth-child(1) .icon{background:rgba(46,111,183,.16);color:var(--blue)}
+    .process-card:nth-child(2) .icon{background:rgba(231,45,53,.12);color:var(--red)}
+    .process-card:nth-child(3) .icon{background:rgba(105,118,79,.18);color:var(--olive)}
+
+    .process-card b{
+      font-size:30px;
+      letter-spacing:-.05em;
+      margin-bottom:22px;
+    }
+
+    .chips{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .chips span{
+      border:1px solid var(--ink);
+      border-radius:999px;
+      padding:9px 13px;
+      font-size:12px;
+      font-weight:650;
+      background:rgba(255,255,255,.34);
+    }
+
+    /* CONTEXT BOXES */
+
+    .concept-box-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      margin-top:68px;
+      padding-top:24px;
+      align-items:stretch;
+    }
+
+    .concept-box{
+  background:linear-gradient(135deg,#FFFCF5,#F2F6EC);
+  border:1px solid var(--line);
+  border-radius:34px;
+  padding:34px;
+  box-shadow:var(--shadow);
+  min-height:310px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:22px;
+}
+
+.concept-icon{
+  width:68px;
+  height:68px;
+  border-radius:22px;
+  border:1px dashed rgba(20,33,61,.22);
+  background:rgba(255,255,255,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin-bottom:4px;
+}
+
+.concept-icon img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:14px;
+}
+
+.concept-icon span{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  color:rgba(20,33,61,.38);
+}
+
+    .concept-box .kicker{
+      margin-bottom:18px;
+    }
+
+    .concept-box h3{
+      font-size:clamp(28px,3vw,46px);
+      line-height:1.02;
+      letter-spacing:-.06em;
+      margin-bottom:20px;
+      max-width:520px;
+      color:var(--blue);
+    }
+
+    .concept-box p{
+      max-width:540px;
+      font-size:17px;
+    }
+
+    /* PROBLEM PAGE — NO BLACK FRAME */
+
+    .problem-page{
+      background:transparent;
+    }
+
+    .problem-image-space{
+     width:100%;
+  max-width:1120px;
+  margin:70px auto 0;
+  min-height:auto;
+  border-radius:0;
+  border:0;
+  background:transparent;
+  display:block;
+  overflow:visible;
+}
+
+.problem-image-space img{
+  width:100%;
+  height:auto;
+  object-fit:contain;
+  display:block;
+}
+
+    .placeholder-copy b{
+      display:block;
+      font-size:13px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+      color:rgba(20,33,61,.62);
+    }
+
+    .placeholder-copy small{
+      font-size:14px;
+      color:rgba(20,33,61,.45);
+    }
+
+    /* OPPORTUNITY CARDS */
+
+    .opportunity-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+      align-items:stretch;
+      margin-top:64px;
+      padding-top:24px;
+    }
+
+    .behaviour-card{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:34px 28px;
+      min-height:250px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .behaviour-num{
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      color:#fff;
+      background:var(--blue);
+      margin-bottom:26px;
+    }
+
+    .behaviour-card:nth-child(2) .behaviour-num{background:var(--red)}
+    .behaviour-card:nth-child(3) .behaviour-num{background:var(--olive)}
+
+    .behaviour-card h3{
+      margin-bottom:12px;
+      font-size:28px;
+    }
+
+    .behaviour-card p{
+      font-size:16px;
+      line-height:1.5;
+      max-width:260px;
+    }
+
+    /* DATA */
+
+    .data-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+      align-items:stretch;
+      margin-top:64px;
+      padding-top:24px;
+    }
+
+    .data-card{
+      border-radius:34px;
+      padding:34px 30px;
+      min-height:270px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      text-align:center;
+      align-items:center;
+      color:#fff;
+      background:var(--blue);
+      box-shadow:var(--shadow);
+    }
+
+    .data-card:nth-child(2){background:var(--red)}
+    .data-card:nth-child(3){background:var(--olive)}
+
+    .data-card .num{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(64px,7vw,112px);
+      line-height:.9;
+      letter-spacing:-.06em;
+      font-weight:700;
+      margin-bottom:28px;
+    }
+
+    .data-card p{
+      color:rgba(255,255,255,.82);
+      font-size:16px;
+      line-height:1.5;
+      max-width:260px;
+    }
+
+    .source-line{
+      text-align:center;
+      margin-top:20px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* HMW */
+
+    .hmw-section{
+      min-height:58vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+
+    .hmw-statement{
+      font-family:"Playfair Display",serif;
+      font-size:clamp(36px,4.6vw,68px);
+      line-height:1.12;
+      letter-spacing:-.055em;
+      font-weight:700;
+      font-style:italic;
+      max-width:980px;
+      margin:0 auto;
+      color:var(--navy);
+    }
+
+    /* SOLUTIONS STACK */
+
+    .solution-intro{padding-bottom:40px}
+
+    .stack-section{
+      padding-top:0;
+      padding-bottom:80px;
+    }
+
+    .solution-card{
+      position:relative;
+      top:auto;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      align-items:stretch;
+      min-height:auto;
+      margin-bottom:42px;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:38px;
+      padding:22px;
+      box-shadow:0 24px 70px rgba(20,33,61,.09);
+      overflow:visible;
+      transform-origin:center top;
+    }
+
+    .solution-card:nth-child(2){background:#EEF1E4}
+    .solution-card:nth-child(3){background:#EDF4FB}
+
+    .solution-copy{
+      padding:clamp(24px,3vw,42px);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:18px;
+    }
+
+    .solution-index{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.16em;
+      color:var(--red);
+      text-transform:uppercase;
+    }
+
+    .solution-copy h3{
+      font-size:clamp(32px,3.8vw,58px);
+      line-height:1.04;
+      letter-spacing:-.065em;
+      max-width:620px;
+    }
+
+    .solution-copy .subtitle{
+      color:var(--ink);
+      font-weight:750;
+      font-size:clamp(18px,1.6vw,23px);
+      line-height:1.35;
+      max-width:620px;
+    }
+
+    .solution-copy p{
+      font-size:16px;
+      line-height:1.62;
+      max-width:620px;
+    }
+
+    .solution-details{
+      display:grid;
+      gap:12px;
+      margin-top:6px;
+    }
+
+    .detail-block{
+      background:rgba(255,252,245,.72);
+      border:1px solid rgba(23,23,23,.10);
+      border-radius:22px;
+      padding:18px;
+    }
+
+    .detail-block strong{
+      display:block;
+      font-size:12px;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+      color:var(--ink);
+    }
+
+    .detail-block span{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    .solution-visual{
+      min-height:520px;
+      border-radius:30px;
+      overflow:hidden;
+      border:1px solid rgba(23,23,23,.12);
+      background:var(--soft);
+      position:relative;
+    }
+
+    .solution-visual img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      position:absolute;
+      inset:0;
+    }
+
+    @media(max-height:820px) and (min-width:900px){
+      .solution-visual{min-height:420px}
+    }
+
+    /* WHY ALSHAYA */
+
+    .brand-chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:34px;
+    }
+
+    .brand-chips span{
+      border:1px solid var(--ink);
+      border-radius:999px;
+      padding:12px 16px;
+      font-size:13px;
+      font-weight:750;
+      background:rgba(255,255,255,.34);
+    }
+
+    /* VALUE */
+
+    .value-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:22px;
+      align-items:stretch;
+      margin-top:64px;
+      padding-top:24px;
+    }
+
+    .value-card{
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:28px;
+      min-height:330px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      text-align:left;
+      box-shadow:var(--shadow);
+    }
+
+    .value-icon-space{
+      width:74px;
+      height:74px;
+      border-radius:22px;
+      background:
+        radial-gradient(circle at 35% 30%,rgba(46,111,183,.16),transparent 48%),
+        rgba(20,33,61,.035);
+      border:1px dashed rgba(20,33,61,.22);
+      margin-bottom:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(20,33,61,.38);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      flex-shrink:0;
+    }
+
+    .value-card h3{
+      font-size:24px;
+      margin-bottom:14px;
+    }
+
+    .value-card p{
+      font-size:15px;
+      line-height:1.55;
+    }
+
+    /* CLOSING */
+
+    .footer{
+      text-align:center;
+      padding:92px 7vw 70px;
+    }
+
+    .closing-title{
+      max-width:980px;
+      margin:0 auto;
+      font-size:clamp(36px,4.6vw,70px);
+      line-height:1.1;
+    }
+
+    .footer p{
+      max-width:760px;
+      margin:26px auto 0;
+      font-size:16px;
+    }
+
+    .contact-section{
+      padding-top:20px;
+      padding-bottom:90px;
+    }
+
+    .contact-wrap{text-align:center}
+
+    .contact-line{
+      font-size:18px;
+      color:var(--muted);
+      margin-bottom:28px;
+    }
+
+    .contact-icons{
+      display:flex;
+      justify-content:center;
+      gap:22px;
+      align-items:center;
+    }
+
+    .contact-icons a{
+      width:44px;
+      height:44px;
+      border:1px solid var(--line);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--paper);
+      transition:transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .contact-icons a:hover{
+      transform:translateY(-3px);
+      border-color:var(--blue);
+      background:#fff;
+    }
+
+    .contact-icons svg{
+      width:22px;
+      height:22px;
+      fill:var(--ink);
+    }
+
+    .designer-credit{
+      margin-top:30px;
+    }
+
+    .designer-credit h3{
+      font-size:24px;
+      line-height:1.1;
+      letter-spacing:-.03em;
+      margin-bottom:8px;
+      color:var(--navy);
+    }
+
+    .designer-credit p{
+      font-size:15px;
+      line-height:1.4;
+      color:var(--muted);
+    }
+
+    @media(max-width:1100px){
+      .value-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:900px){
+      .section-head,
+      .solution-card,
+      .concept-box-grid{
+        grid-template-columns:1fr;
+      }
+
+      .title-side,
+      .text-side{
+        grid-column:1;
+      }
+
+      .process-grid,
+      .data-grid,
+      .opportunity-grid{
+        grid-template-columns:1fr;
+      }
+
+      .solution-card{
+        position:relative;
+        top:auto;
+        min-height:auto;
+      }
+
+      .solution-visual{
+        min-height:360px;
+      }
+
+      .problem-image-space{
+        min-height:420px;
+      }
+    }
+
+    @media(max-width:760px){
+      .nav{display:none}
+
+      section{padding:72px 24px}
+
+      .hero{padding:0}
+
+      .hero-title h1{
+        font-size:clamp(54px,18vw,86px);
+      }
+
+      .page-title{
+        font-size:clamp(38px,11vw,66px);
+      }
+
+      .hmw-statement{
+        font-size:clamp(34px,10vw,58px);
+      }
+
+      .closing-title{
+        font-size:clamp(34px,10vw,58px);
+      }
+
+      .hero-card,
+      .hero-placeholder,
+      .hero-card img{
+        min-height:100vh;
+      }
+
+      .value-grid{grid-template-columns:1fr}
+
+      .problem-image-space{
+        min-height:320px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress" id="progress"></div>
+
+  <nav class="nav" id="nav">
+    <a href="#overview">Overview</a>
+    <a href="#context">Context</a>
+    <a href="#problem">Problem</a>
+    <a href="#opportunity">Opportunity</a>
+    <a href="#solutions">Solutions</a>
+    <a href="#value">Value</a>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <header class="hero" id="overview">
+      <div class="wrap">
+        <div class="hero-card">
+          <!-- Replace placeholder with image:
+          <img src="hero-alshaya-mall.jpg" alt="Gulf mall retail scene">
+          -->
+
+          <div class="hero-placeholder">
+            <div>
+              <b>Full-width hero image placeholder</b>
+              <small>Add a Gulf mall / Alshaya retail journey image here.</small>
+            </div>
+          </div>
+
+          <div class="hero-overlay">
+           
+
+            <div class="hero-title">
+              <h1>Designing for how people move across <span>Gulf malls.</span></h1>
+              <p>A service design exploration of how retail experiences can better fit Gulf mall life.</p>
+
+              <div class="meta">
+                <span class="pill">Retail CX</span>
+                <span class="pill">Experience localisation</span>
+                <span class="pill">Service design</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PROJECT APPROACH -->
+    <section>
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">Project approach</div>
+            <h2 class="page-title">Designing experiences for the local market.</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">This is an independent study built around context, opportunity mapping, and concept development.</p>
+          </div>
+        </div>
+
+        <div class="process-grid">
+          <div class="process-card reveal">
+            <div class="icon">◐</div>
+            <b>Context</b>
+            <div class="chips">
+              <span>Secondary research</span>
+              <span>Retail observation</span>
+              <span>Mall scan</span>
+            </div>
+          </div>
+
+          <div class="process-card reveal delay1">
+            <div class="icon">◇</div>
+            <b>Opportunity</b>
+            <div class="chips">
+              <span>Journey mapping</span>
+              <span>Experience gap framing</span>
+              <span>Behavioural research</span>
+            </div>
+          </div>
+
+          <div class="process-card reveal delay2">
+            <div class="icon">✦</div>
+            <b>Concept</b>
+            <div class="chips">
+              <span>Service design</span>
+              <span>Social Layer</span>
+              <span>Digital Interventions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTEXT -->
+    <section id="context">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">01 · Context</div>
+            <h2 class="page-title">Malls aren't just retail spaces.</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">In Kuwait, and across the Gulf, malls are largely a social space.</p>
+          </div>
+        </div>
+
+        <div class="concept-box-grid">
+          <div class="concept-box reveal">
+  <div class="concept-icon">
+    <img src="icon-global-retail.png" alt="Global retail concept icon">
+  </div>
+
+  <div>
+    <h3>The Global Retail Concept</h3>
+  </div>
+
+  <p>Many franchise stores are designed around a western and linear shopper journey.</p>
+</div>
+
+          <div class="concept-box reveal delay1">
+  <div class="concept-icon">
+    <img src="icon-gulf-mall.png" alt="Gulf mall concept icon">
+  </div>
+
+  <div>
+    <h3>The Gulf Mall Concept</h3>
+  </div>
+
+  <p>In Kuwait and across the Gulf, a mall visit can be a family outing, a walking route, a food stop, a social catch-up, a children’s detour, and a shopping trip — all in one journey.</p>
+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="problem-page" id="problem">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">02 · Problem</div>
+            <h2 class="page-title">The store is designed. The journey around it is not.</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">A day at the mall often includes other side-quests and activities. These moments influence dwell time, comfort, purchase decisions, and movement between brands.</p>
+          </div>
+        </div>
+
+        <div class="problem-image-space reveal">
+  <img src="gulf-mall-journey-map.png" alt="Gulf mall journey map">
+</div>
+      </div>
+    </section>
+
+    <!-- OPPORTUNITY -->
+    <section id="opportunity">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">03 · Opportunity</div>
+            <h2 class="page-title">Designing for the moments around shopping.</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">The opportunity is to make the experiences around Alshaya’s global brands feel more locally relevant.</p>
+          </div>
+        </div>
+
+        <div class="opportunity-grid">
+          <div class="behaviour-card reveal">
+            <div class="behaviour-num">01</div>
+            <h3>Waiting</h3>
+            <p>Because companions shape how long shoppers stay.</p>
+          </div>
+
+          <div class="behaviour-card reveal delay1">
+            <div class="behaviour-num">02</div>
+            <h3>Pausing</h3>
+            <p>Because customers often step away before they are ready to buy.</p>
+          </div>
+
+          <div class="behaviour-card reveal delay2">
+            <div class="behaviour-num">03</div>
+            <h3>Walking</h3>
+            <p>Because malls are already used as safe, social, climate-controlled walking spaces.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATA -->
+    <section>
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">04 · Why design beyond the store?</div>
+            <h2 class="page-title">Better experiences lead to higher retail engagement.</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">Research suggests that companions of a shopper largely influence their mall experience.</p>
+          </div>
+        </div>
+
+        <div class="data-grid">
+          <div class="data-card reveal">
+            <div class="num">3–4h</div>
+            <p>Average visit duration often cited for Gulf malls.</p>
+          </div>
+
+          <div class="data-card reveal delay1">
+            <div class="num">40K</div>
+            <p>Mall visitors daily in Kuwait, cited in Kuwait’s Health Mall initiative.</p>
+          </div>
+
+          <div class="data-card reveal delay2">
+            <div class="num">180K</div>
+            <p>Mall visitors daily during holidays, cited in Kuwait’s Health Mall initiative.</p>
+          </div>
+        </div>
+
+        <p class="source-line">Sources to add/verify: Kuwait Health Mall initiative, GCC retail reports, companion-shopping research.</p>
+      </div>
+    </section>
+
+    <!-- HMW -->
+    <section class="hmw-section">
+      <div class="wrap">
+        <div class="kicker" style="justify-content:center;">Problem statement</div>
+        <div class="hmw-statement reveal">
+          How might Alshaya design the experience around its stores to better fit the way people use malls in Kuwait?
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTION INTRO -->
+    <section class="solution-intro" id="solutions">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">05 · Service concept</div>
+            <h2 class="page-title">The Local Fit</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">A set of experience interventions that help Alshaya design beyond the store — across waiting, pausing, and walking.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STACKED SOLUTIONS -->
+    <section class="stack-section">
+      <div class="wrap">
+
+        <article class="solution-card">
+          <div class="solution-copy">
+            <div class="solution-index">01</div>
+            <h3>Companion Comfort</h3>
+            <p class="subtitle">Companions shape how long shoppers stay.</p>
+            <p>Make waiting feel intentional through comfortable seating, living-room-style fitting areas, charging points, small hospitality cues, and shared decision moments near high-dwell stores.</p>
+
+            <div class="solution-details">
+              <div class="detail-block">
+                <strong>Core idea</strong>
+                <span>When companions feel comfortable, shoppers get more time to browse, try, and decide.</span>
+              </div>
+
+              <div class="detail-block">
+                <strong>Best fit</strong>
+                <span>Fashion, Beauty, Baby care</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="solution-visual">
+            <img src="solution-companion-comfort.png" alt="Companion comfort concept">
+          </div>
+        </article>
+
+        <article class="solution-card">
+          <div class="solution-copy">
+            <div class="solution-index">02</div>
+            <h3>Pause & Resume</h3>
+            <p class="subtitle">The pause is not the problem. Losing the customer in the journey is.</p>
+            <p>Alshaya can help shoppers continue later through item holds, QR save points, saved sizes, Aura reminders, and staff prompts that make returning feel easy.</p>
+
+            <div class="solution-details">
+              <div class="detail-block">
+                <strong>Core idea</strong>
+                <span>Let customers step away without losing purchase intent.</span>
+              </div>
+
+              <div class="detail-block">
+                <strong>Best fit</strong>
+                <span>Fitting rooms, Beauty counters, High-consideration retail</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="solution-visual">
+            <img src="solution-pause-resume.png" alt="Pause and resume concept">
+          </div>
+        </article>
+
+        <article class="solution-card">
+          <div class="solution-copy">
+            <div class="solution-index">03</div>
+            <h3>Aura Walk Loops</h3>
+            <p class="subtitle">Turn everyday mall walking into a healthier, more rewarding journey.</p>
+            <p>Aura Walk builds on the existing habit of walking inside malls. As customers complete distance or step milestones, they earn Aura points that can be redeemed at their favourite Alshaya brands.</p>
+            <p>This also aligns with Kuwait’s Healthy Cities and Health Malls direction, where malls are being explored as everyday spaces that can encourage healthier behaviours.</p>
+
+            <div class="solution-details">
+              <div class="detail-block">
+                <strong>Core idea</strong>
+                <span>Connect wellness, movement, and retail engagement through Aura.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="solution-visual">
+            <img src="solution-aura-walk.png" alt="Aura Walk concept">
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- WHY ALSHAYA -->
+    <section>
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">06 · Why Alshaya?</div>
+            <h2 class="page-title">Alshaya can connect what single brands cannot.</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">Alshaya can connect the full mall day for their customers. The opportunity is in designing for the movement between stores.</p>
+
+            <div class="brand-chips">
+              <span>Food</span>
+              <span>Fashion</span>
+              <span>Beauty</span>
+              <span>Pharmacy</span>
+              <span>Family retail</span>
+              <span>Coffee</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUE -->
+    <section id="value">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="title-side">
+            <div class="kicker">07 · Business + Brand Value</div>
+            <h2 class="page-title">Better journeys create better retail value.</h2>
+          </div>
+
+          <div class="text-side">
+            <p class="lead">A locally relevant experience layer can create value for customers, brands, and Alshaya’s wider portfolio.</p>
+          </div>
+        </div>
+
+        <div class="value-grid">
+          <div class="value-card reveal">
+            <div class="value-icon-space">PNG</div>
+            <h3>Smoother flow</h3>
+            <p>Reduce friction across natural customer journeys like waiting, pausing, and returning.</p>
+          </div>
+
+          <div class="value-card reveal delay1">
+            <div class="value-icon-space">PNG</div>
+            <h3>More engagement</h3>
+            <p>Better journeys create better retail engagement.</p>
+          </div>
+
+          <div class="value-card reveal delay2">
+            <div class="value-icon-space">PNG</div>
+            <h3>Local relevance</h3>
+            <p>Make global brands feel more natural to Gulf mall culture.</p>
+          </div>
+
+          <div class="value-card reveal delay3">
+            <div class="value-icon-space">PNG</div>
+            <h3>Global recognition</h3>
+            <p>Position Alshaya as a regional pioneer in experience localisation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="footer">
+      <div class="wrap">
+        <h2 class="closing-title reveal">For Alshaya, the next opportunity can be turning the wider mall journey into a more connected retail <em>experience.</em></h2>
+        <p class="reveal delay1">This is an independent concept study built from secondary research, retail observation, and exploratory design methods, intended as a conversation starter.</p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact-section">
+      <div class="wrap contact-wrap">
+        <div class="contact-icons">
+          <a href="https://www.behance.net/your-username" target="_blank" aria-label="Behance">
+            <svg viewBox="0 0 24 24"><path d="M7.8 11.1c1.1 0 1.9-.6 1.9-1.7S8.9 7.8 7.6 7.8H4.9v3.3h2.9zm.2 5.1c1.4 0 2.3-.7 2.3-2s-.9-1.9-2.4-1.9h-3v3.9H8zM2.5 5.7h5.4c2.7 0 4.4 1.3 4.4 3.3 0 1.4-.7 2.4-2 2.9 1.7.5 2.6 1.6 2.6 3.2 0 2.3-1.9 3.8-4.8 3.8H2.5V5.7zm13.1 3.1h5.7v1.4h-5.7V8.8zm2.9 2.5c-1.2 0-2 .7-2.2 1.8h4.3c-.1-1.1-.8-1.8-2.1-1.8zm.1 7.8c-3 0-5-2-5-5s2-5 4.9-5c3.2 0 4.9 2.2 4.7 5.7h-7c.1 1.5 1 2.4 2.4 2.4 1 0 1.7-.4 2.1-1.2H23c-.6 1.9-2.2 3.1-4.4 3.1z"/></svg>
+          </a>
+
+          <a href="https://www.linkedin.com/in/your-username" target="_blank" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.34 8.1h4.32V23H.34V8.1zM8.14 8.1h4.14v2.04h.06c.58-1.1 2-2.26 4.12-2.26 4.4 0 5.22 2.9 5.22 6.66V23h-4.32v-7.5c0-1.8-.04-4.1-2.5-4.1-2.5 0-2.88 1.95-2.88 3.96V23H8.14V8.1z"/></svg>
+          </a>
+
+          <a href="mailto:your.email@example.com" aria-label="Email">
+            <svg viewBox="0 0 24 24"><path d="M2 4h20c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H2c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm10 9.2L2.4 6.8V18h19.2V6.8L12 13.2zm0-2.4L20.8 6H3.2L12 10.8z"/></svg>
+          </a>
+        </div>
+
+        <div class="designer-credit">
+          <h3>Rekha Mathew</h3>
+          <p>Product and Service Designer</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const progress = document.getElementById("progress");
+const navLinks = document.querySelectorAll(".nav a");
+const navSections = [...navLinks].map(link => {
+  return document.querySelector(link.getAttribute("href"));
+});
+
+   function updateProgress(){
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const progressWidth = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progress.style.width = progressWidth + "%";
+
+  let activeIndex = 0;
+
+  navSections.forEach((section, index) => {
+    if (!section) return;
+
+    const sectionTop = section.offsetTop - 180;
+
+    if (scrollTop >= sectionTop) {
+      activeIndex = index;
+    }
+  });
+
+  navLinks.forEach((link, index) => {
+    link.classList.toggle("active", index === activeIndex);
+  });
+}
+
+    window.addEventListener("scroll", updateProgress);
+    updateProgress();
+
+    const reveals = document.querySelectorAll(".reveal");
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add("show");
+        }
+      });
+    },{threshold:.22});
+
+    reveals.forEach(el=>observer.observe(el));
+  </script>
+</body>
+</html>
